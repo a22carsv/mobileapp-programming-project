@@ -11,6 +11,7 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
 
+    public CityViewHolder cityViewHolder;
     private Context context;
     private List<City> cityList;
     private OnItemClickListener listener;
@@ -32,20 +33,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
         this.listener = listener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView idTextView;
-        public TextView loginTextView;
-        public TextView nameTextView;
-        public TextView locationTextView;
-        public TextView sizeTextView;
-
+    public class ViewHolder extends CityViewHolder {
         public ViewHolder(View itemView) {
             super(itemView);
-            idTextView = itemView.findViewById(R.id.cityIdTextView);
-            loginTextView = itemView.findViewById(R.id.cityLoginTextView);
-            nameTextView = itemView.findViewById(R.id.cityNameTextView);
-            locationTextView = itemView.findViewById(R.id.cityLocationTextView);
-            sizeTextView = itemView.findViewById(R.id.citySizeTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,11 +51,12 @@ public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
         }
     }
 
+
     @NonNull
     @Override
     public CityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.city_item, parent, false);
-        CityViewHolder cityViewHolder = new CityViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_item, parent, false);
+        cityViewHolder = new CityViewHolder(view);
         return cityViewHolder;
     }
 

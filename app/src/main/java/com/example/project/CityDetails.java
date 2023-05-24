@@ -6,36 +6,20 @@ import android.widget.TextView;
 
 public class CityDetails extends AppCompatActivity {
 
-    private TextView cityIdTextView;
-    private TextView cityLoginTextView;
-    private TextView citySizeTextView;
-    private TextView cityLocationTextView;
-    private TextView cityNameTextView;
+    private TextView cityAuxDataTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_details);
 
+        cityAuxDataTextView = findViewById(R.id.cityAux);
         // Retrieve city information from intent extras
-        String cityId = getIntent().getStringExtra("cityId");
-        String cityLogin = getIntent().getStringExtra("cityLogin");
-        String citySize = getIntent().getStringExtra("citySize");
-        String cityLocation = getIntent().getStringExtra("cityLocation");
-        String cityName = getIntent().getStringExtra("cityName");
+        String cityAuxData = getIntent().getStringExtra("AuxData");
 
-        // Initialize TextViews
-        cityIdTextView = findViewById(R.id.cityIdTextView);
-        cityLoginTextView = findViewById(R.id.cityLoginTextView);
-        citySizeTextView = findViewById(R.id.citySizeTextView);
-        cityLocationTextView = findViewById(R.id.cityLocationTextView);
-        cityNameTextView = findViewById(R.id.cityNameTextView);
 
-        // Set city information to TextViews
-        cityIdTextView.setText(cityId);
-        cityLoginTextView.setText(cityLogin);
-        citySizeTextView.setText(citySize);
-        cityLocationTextView.setText(cityLocation);
-        cityNameTextView.setText(cityName);
+        // Set city information to TextView
+        cityAuxDataTextView.setText(cityAuxData);
     }
 }

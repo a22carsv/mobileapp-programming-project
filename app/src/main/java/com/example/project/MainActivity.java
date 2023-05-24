@@ -3,6 +3,7 @@ package com.example.project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,20 +44,20 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
     private JsonTask.JsonTaskListener jsonTaskListener = new JsonTask.JsonTaskListener()
     {
         @Override
-        public void onPostExecute(String json)
-        {
-            if (json != null)
-            {
+        public void onPostExecute(String json) {
+            if (json != null) {
+                Log.d("JSON Response", json); // Print the JSON response for debugging
                 try {
                     JSONArray jsonArray = new JSONArray(json);
                     parseJsonData(jsonArray);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                Log.d("JSON Response", "Empty or null JSON"); // Debug message for empty or null JSON
             }
-            else {Log.println(Log.ASSERT, "test", "this works"); }
-
         }
+
 
 
     };
@@ -74,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
         // Open CityDetailsActivity and pass city information
         Intent intent = new Intent(this, CityDetails.class);
         intent.putExtra("cityId", city.getId());
-        intent.putExtra("cityLogin", city.getLogin());
         intent.putExtra("citySize", city.getSize());
         intent.putExtra("cityLocation", city.getLocation());
         intent.putExtra("cityName", city.getName());
+        intent.putExtra("city")
         startActivity(intent);
     }
 
@@ -87,30 +88,35 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
     }
 
     private void parseJsonData(JSONArray jsonArray) {
+
+
         try {
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject cityObject = jsonArray.getJSONObject(i);
 
                 String id = cityObject.getString("ID");
-                String login = cityObject.getString("login");
                 String name = cityObject.getString("name");
                 String location = cityObject.getString("location");
                 String size = cityObject.getString("size");
+                String auxData = cityObject.getString("auxData");
 
                 // Create a new City object and add it to the cityList
-                City city = new City(id, login, size, location, name);
+                City city = new City(id, size, location, name, auxData);
                 cityList.add(city);
-                Log.println(Log.ASSERT, "tt", city.getName());
+
             }
             cityAdapter.set(cityList);
             for (int i = 0; i < cityList.size(); i++) {
-                Log.println(Log.ASSERT, "tt", cityList.get(i).getName());
+
             }
+
 
             // Notify the adapter that the data set has changed
             cityAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
+
         }
     }
 }
