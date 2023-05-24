@@ -4,7 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
 
-public class CityDetailsActivity extends AppCompatActivity {
+public class CityDetails extends AppCompatActivity {
 
     private TextView cityIdTextView;
     private TextView cityLoginTextView;

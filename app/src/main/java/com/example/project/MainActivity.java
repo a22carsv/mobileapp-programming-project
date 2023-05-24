@@ -1,7 +1,6 @@
 package com.example.project;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
         City city = cityList.get(position);
 
         // Open CityDetailsActivity and pass city information
-        Intent intent = new Intent(this, CityDetailsActivity.class);
+        Intent intent = new Intent(this, CityDetails.class);
         intent.putExtra("cityId", city.getId());
         intent.putExtra("cityLogin", city.getLogin());
         intent.putExtra("citySize", city.getSize());
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
         try {
             JSONArray jsonArray = new JSONArray(json);
             parseJsonData(jsonArray);
-            cityAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -74,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject cityObject = jsonArray.getJSONObject(i);
 
-                String id = cityObject.getString("ID");
-                String login = cityObject.getString("type");
+                String id = cityObject.getString("id");
+                String login = cityObject.getString("login");
                 String name = cityObject.getString("name");
                 String location = cityObject.getString("location");
                 String size = cityObject.getString("size");
@@ -84,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
                 City city = new City(id, login, size, location, name);
                 cityList.add(city);
             }
+
+            // Notify the adapter that the data set has changed
+            cityAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
         }
