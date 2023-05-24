@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CityDetailsActivity">
+
+    <TextView
+        android:id="@+id/cityIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/cityLoginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cityIdTextView"
+        android:layout_margin="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/citySizeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cityLoginTextView"
+        android:layout_margin="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/cityLocationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/citySizeTextView"
+        android:layout_margin="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/cityNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cityLocationTextView"
+        android:layout_margin="16dp"
+        android:textSize="18sp" />
+
+</RelativeLayout>
