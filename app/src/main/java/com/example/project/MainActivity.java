@@ -2,6 +2,8 @@ package com.example.project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,8 +40,30 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
         getJsonFromURL();
     }
 
+    private JsonTask.JsonTaskListener jsonTaskListener = new JsonTask.JsonTaskListener()
+    {
+        @Override
+        public void onPostExecute(String json)
+        {
+            if (json != null)
+            {
+                try {
+                    JSONArray jsonArray = new JSONArray(json);
+                    parseJsonData(jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {Log.println(Log.ASSERT, "test", "this works"); }
+
+        }
+
+
+    };
+
     private void getJsonFromURL() {
-        new JsonTask(this).execute("https://mobprog.webug.se/json-api?login=a22carsv");
+        new JsonTask(jsonTaskListener).execute("https://mobprog.webug.se/json-api?login=a22carsv");
+
     }
 
     @Override
@@ -59,12 +83,7 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
 
     @Override
     public void onPostExecute(String json) {
-        try {
-            JSONArray jsonArray = new JSONArray(json);
-            parseJsonData(jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void parseJsonData(JSONArray jsonArray) {
@@ -72,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject cityObject = jsonArray.getJSONObject(i);
 
-                String id = cityObject.getString("id");
+                String id = cityObject.getString("ID");
                 String login = cityObject.getString("login");
                 String name = cityObject.getString("name");
                 String location = cityObject.getString("location");
@@ -81,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
                 // Create a new City object and add it to the cityList
                 City city = new City(id, login, size, location, name);
                 cityList.add(city);
+                Log.println(Log.ASSERT, "tt", city.getName());
+            }
+            cityAdapter.set(cityList);
+            for (int i = 0; i < cityList.size(); i++) {
+                Log.println(Log.ASSERT, "tt", cityList.get(i).getName());
             }
 
             // Notify the adapter that the data set has changed

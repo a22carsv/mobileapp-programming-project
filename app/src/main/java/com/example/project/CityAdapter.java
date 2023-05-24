@@ -9,11 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
 
     private Context context;
     private List<City> cityList;
     private OnItemClickListener listener;
+
+    public void set(List<City> cityList) {
+        this.cityList = cityList;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -59,21 +63,18 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.city_item, parent, false);
-        return new ViewHolder(view);
+        CityViewHolder cityViewHolder = new CityViewHolder(view);
+        return cityViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
         City city = cityList.get(position);
-
-        holder.idTextView.setText(city.getId());
-        holder.loginTextView.setText(city.getLogin());
-        holder.nameTextView.setText(city.getName());
-        holder.locationTextView.setText(city.getLocation());
-        holder.sizeTextView.setText(city.getSize());
+        holder.bind(city);
     }
+
 
     @Override
     public int getItemCount() {
