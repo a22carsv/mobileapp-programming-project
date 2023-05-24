@@ -31,7 +31,7 @@ public class CityDetailsActivity extends AppCompatActivity {
         cityLocationTextView = findViewById(R.id.cityLocationTextView);
         cityNameTextView = findViewById(R.id.cityNameTextView);
 
-        // Set city information to TextViews
+        // Set city information in TextViews
         cityIdTextView.setText(cityId);
         cityLoginTextView.setText(cityLogin);
         citySizeTextView.setText(citySize);

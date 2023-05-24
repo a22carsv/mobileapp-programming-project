@@ -1,65 +1,90 @@
 package com.example.project;
 
 import android.os.AsyncTask;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
-public class JsonTask extends AsyncTask<Void, Void, String> {
+public class JsonTask extends AsyncTask<String, Void, JSONArray> {
 
-    public interface JsonTaskListener {
-        void onPostExecute(String json);
+    private List<City> cityList;
+    private CityAdapter cityAdapter;
+
+    public JsonTask(List<City> cityList, CityAdapter cityAdapter) {
+        this.cityList = cityList;
+        this.cityAdapter = cityAdapter;
     }
 
-    private HttpURLConnection connection = null;
-    private BufferedReader reader = null;
-    private final JsonTaskListener listener;
+    @Override
+    protected JSONArray doInBackground(String... urls) {
+        if (urls.length == 0)
+            return null;
 
-    public JsonTask(JsonTaskListener listener) {
-        this.listener = listener;
-    }
+        String urlString = urls[0];
+        HttpURLConnection urlConnection = null;
 
-    protected String doInBackground(Void... params) {
         try {
-            URL url = new URL("https://mobprog.webug.se/json-api?login=a22carsv");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
+            URL url = new URL(urlString);
+            urlConnection = (HttpURLConnection) url.openConnection();
 
-            InputStream stream = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-
-            StringBuilder builder = new StringBuilder();
+            InputStream inputStream = urlConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            StringBuilder stringBuilder = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null && !isCancelled()) {
-                builder.append(line).append("\n");
+
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
             }
-            return builder.toString();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+            return new JSONArray(stringBuilder.toString());
+
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if (urlConnection != null)
+                urlConnection.disconnect();
         }
+
         return null;
     }
 
     @Override
-    protected void onPostExecute(String json) {
-        listener.onPostExecute(json);
+    protected void onPostExecute(JSONArray jsonArray) {
+        if (jsonArray != null) {
+            Log.d("JsonTask", "Received JSON response: " + jsonArray.toString());
+            try {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.has("ID")) {
+                        String id = jsonObject.getString("ID");
+                        String name = jsonObject.getString("name");
+                        String location = jsonObject.getString("location");
+                        int size = jsonObject.getInt("size");
+
+                        cityList.add(new City(id, "", "", name, location, size));
+                    } else {
+                        Log.d("JsonTask", "Missing 'ID' field in JSON object: " + jsonObject.toString());
+                    }
+                }
+                if (cityAdapter != null) {
+                    cityAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
+
