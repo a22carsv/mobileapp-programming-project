@@ -29,11 +29,19 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView idTextView;
+        public TextView loginTextView;
         public TextView nameTextView;
+        public TextView locationTextView;
+        public TextView sizeTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.nameTextView);
+            idTextView = itemView.findViewById(R.id.cityIdTextView);
+            loginTextView = itemView.findViewById(R.id.cityLoginTextView);
+            nameTextView = itemView.findViewById(R.id.cityNameTextView);
+            locationTextView = itemView.findViewById(R.id.cityLocationTextView);
+            sizeTextView = itemView.findViewById(R.id.citySizeTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,7 +67,12 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         City city = cityList.get(position);
+
+        holder.idTextView.setText(city.getId());
+        holder.loginTextView.setText(city.getLogin());
         holder.nameTextView.setText(city.getName());
+        holder.locationTextView.setText(city.getLocation());
+        holder.sizeTextView.setText(city.getSize());
     }
 
     @Override

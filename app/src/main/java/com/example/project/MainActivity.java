@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,18 +36,11 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
         recyclerView.setAdapter(cityAdapter);
 
         // Fetch JSON data
-        FetchDataTask fetchDataTask = new FetchDataTask();
-        fetchDataTask.execute();
+        getJsonFromURL();
     }
 
-    private class FetchDataTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            JsonTask jsonTask = new JsonTask(MainActivity.this);
-            jsonTask.execute();
-            return null;
-        }
+    private void getJsonFromURL() {
+        new JsonTask(this).execute("https://mobprog.webug.se/json-api?login=a22carsv");
     }
 
     @Override
@@ -80,12 +72,13 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
     private void parseJsonData(JSONArray jsonArray) {
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String id = jsonObject.getString("ID");
-                String login = jsonObject.getString("Login");
-                String size = jsonObject.getString("Size");
-                String location = jsonObject.getString("Location");
-                String name = jsonObject.getString("Name");
+                JSONObject cityObject = jsonArray.getJSONObject(i);
+
+                String id = cityObject.getString("ID");
+                String login = cityObject.getString("type");
+                String name = cityObject.getString("name");
+                String location = cityObject.getString("location");
+                String size = cityObject.getString("size");
 
                 // Create a new City object and add it to the cityList
                 City city = new City(id, login, size, location, name);

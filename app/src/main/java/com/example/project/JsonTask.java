@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class JsonTask extends AsyncTask<Void, Void, String> {
+public class JsonTask extends AsyncTask<String, String, String> {
 
     public interface JsonTaskListener {
         void onPostExecute(String json);
@@ -20,13 +20,14 @@ public class JsonTask extends AsyncTask<Void, Void, String> {
     private BufferedReader reader = null;
     private final JsonTaskListener listener;
 
+    @SuppressWarnings("deprecation")
     public JsonTask(JsonTaskListener listener) {
         this.listener = listener;
     }
 
-    protected String doInBackground(Void... params) {
+    protected String doInBackground(String... params) {
         try {
-            URL url = new URL("https://mobprog.webug.se/json-api?login=a22carsv");
+            URL url = new URL(params[0]);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
