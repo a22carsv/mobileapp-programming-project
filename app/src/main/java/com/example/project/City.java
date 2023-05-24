@@ -1,22 +1,22 @@
 package com.example.project;
 
 public class City {
-    private String ID;
+    private String id;
     private String login;
     private String size;
     private String location;
     private String name;
 
-    public City(String ID, String login, String size, String location, String name) {
-        this.ID = ID;
+    public City(String id, String login, String size, String location, String name) {
+        this.id = id;
         this.login = login;
         this.size = size;
         this.location = location;
         this.name = name;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
     public String getLogin() {
@@ -34,4 +34,5 @@ public class City {
     public String getName() {
         return name;
     }
+
 }

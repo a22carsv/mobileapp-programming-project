@@ -1,16 +1,15 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,26 +24,41 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Create an empty list for city data
         cityList = new ArrayList<>();
+
+        // Initialize and set the adapter for RecyclerView
         cityAdapter = new CityAdapter(this, cityList);
         cityAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(cityAdapter);
 
-        JsonTask jsonTask = new JsonTask();
-        jsonTask.setListener(this);
-        jsonTask.execute("https://mobprog.webug.se/json-api?login=a22carsv");
+        // Fetch JSON data
+        FetchDataTask fetchDataTask = new FetchDataTask();
+        fetchDataTask.execute();
+    }
 
+    private class FetchDataTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            JsonTask jsonTask = new JsonTask(MainActivity.this);
+            jsonTask.execute();
+            return null;
+        }
     }
 
     @Override
     public void onItemClick(int position) {
+        // Handle item click event
         City city = cityList.get(position);
+
+        // Open CityDetailsActivity and pass city information
         Intent intent = new Intent(this, CityDetailsActivity.class);
-        intent.putExtra("cityId", city.getID());
+        intent.putExtra("cityId", city.getId());
         intent.putExtra("cityLogin", city.getLogin());
         intent.putExtra("citySize", city.getSize());
         intent.putExtra("cityLocation", city.getLocation());
@@ -53,23 +67,32 @@ public class MainActivity extends AppCompatActivity implements CityAdapter.OnIte
     }
 
     @Override
-    public void onJsonTaskComplete(JSONArray jsonArray) {
-        if (jsonArray != null) {
-            try {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String id = jsonObject.getString("id");
-                    String login = jsonObject.getString("login");
-                    String size = jsonObject.getString("size");
-                    String location = jsonObject.getString("location");
-                    String name = jsonObject.getString("name");
+    public void onPostExecute(String json) {
+        try {
+            JSONArray jsonArray = new JSONArray(json);
+            parseJsonData(jsonArray);
+            cityAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
-                    cityList.add(new City(id, login, size, location, name));
-                }
-                cityAdapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
+    private void parseJsonData(JSONArray jsonArray) {
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = jsonObject.getString("ID");
+                String login = jsonObject.getString("Login");
+                String size = jsonObject.getString("Size");
+                String location = jsonObject.getString("Location");
+                String name = jsonObject.getString("Name");
+
+                // Create a new City object and add it to the cityList
+                City city = new City(id, login, size, location, name);
+                cityList.add(city);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }
