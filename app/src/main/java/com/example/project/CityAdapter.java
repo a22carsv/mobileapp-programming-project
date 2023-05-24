@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
     public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
         City city = cityList.get(position);
         holder.bind(city);
+        Log.d("test2", city.getName());
     }
 
 

@@ -4,42 +4,26 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/cityIdTextView"
-        android:layout_width="wrap_content"
+        android:id="@+id/nameTextView"
+        android:text="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="18sp" />
+        android:textAppearance="?android:attr/textAppearanceListItem" />
 
     <TextView
-        android:id="@+id/cityLoginTextView"
+        android:id="@+id/sizeTextView"
+        android:text="2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cityIdTextView"
-        android:layout_margin="16dp"
-        android:textSize="18sp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black" />
 
     <TextView
-        android:id="@+id/cityAuxDataTextView"
+        android:id="@+id/locationTextView"
         android:layout_width="wrap_content"
+        android:text="3"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cityLoginTextView"
-        android:layout_margin="16dp"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/cityLocationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cityAuxDataTextView"
-        android:layout_margin="16dp"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/cityNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cityLocationTextView"
-        android:layout_margin="16dp"
-        android:textSize="18sp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

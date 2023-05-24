@@ -3,6 +3,7 @@ package com.example.project;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CityViewHolder extends RecyclerView.ViewHolder {
@@ -12,9 +13,9 @@ public class CityViewHolder extends RecyclerView.ViewHolder {
 
     public CityViewHolder(View itemView) {
         super(itemView);
-        sizeTextView = itemView.findViewById(R.id.cityAuxDataTextView);
-        locationTextView = itemView.findViewById(R.id.cityLocationTextView);
-        nameTextView = itemView.findViewById(R.id.cityNameTextView);
+        sizeTextView = itemView.findViewById(R.id.sizeTextView);
+        locationTextView = itemView.findViewById(R.id.locationTextView);
+        nameTextView = itemView.findViewById(R.id.nameTextView);
     }
 
     public void bind(City city) {

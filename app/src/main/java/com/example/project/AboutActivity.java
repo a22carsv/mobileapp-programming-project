@@ -3,6 +3,7 @@ package com.example.project;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -14,6 +15,8 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.about_activity);
 
         webView = findViewById(R.id.webView);
-        webView.loadUrl("file:///android_asset/about.html");
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("file:///android_asset/internal.html");
     }
 }
