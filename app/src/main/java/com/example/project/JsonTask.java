@@ -73,7 +73,7 @@ public class JsonTask extends AsyncTask<String, Void, JSONArray> {
                         String location = jsonObject.getString("location");
                         int size = jsonObject.getInt("size");
 
-                        cityList.add(new City(id, "", "", name, location, size));
+                        cityList.add(new City(id, "", "", name, location));
                     } else {
                         Log.d("JsonTask", "Missing 'ID' field in JSON object: " + jsonObject.toString());
                     }
